@@ -1,7 +1,6 @@
 package lua
 
-import ()
-
+// Call -- dofile(filePath) and call methodName on vm
 func Call(filePath string, methodName string, args ...interface{}) (interface{}, error) {
 	callback := make(chan interface{})
 	defer close(callback)

@@ -1,0 +1,21 @@
+language: go
+
+go:
+  - 1.11
+
+env:
+  global:
+    - DEPS_DIR=$HOME/luajit
+  matrix:
+    - WITH_LUAJIT_LIBRARY=yes
+      CGO_CFLAGS=-I$DEPS_DIR/usr/local/include
+      LD_LIBRARY_PATH=$DEPS_DIR/usr/local/lib
+      CGO_LDFLAGS=-L$DEPS_DIR/usr/local/lib
+
+install:
+  - if [ $WITH_LUAJIT_LIBRARY = "yes" ]; then
+      ./build_lualib_from_source.bash $DEPS_DIR;
+    fi
+
+script:
+    - go test -v ./...

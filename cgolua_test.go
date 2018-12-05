@@ -37,7 +37,19 @@ func TestLuaRun(t *testing.T) {
 	}
 
 	start_t = time.Now()
-	res, err = Call("script.lua", "test_args", 69)
+	res, err = Call("", "test_args", 69)
+	end_t = time.Now()
+	if err != nil {
+		t.Log("ok!! test_args", err)
+	} else {
+		t.Error("shouldnot found function")
+	}
+	err = DoFile("script.lua")
+	if err != nil {
+		t.Error("Loadfile", err)
+	}
+	start_t = time.Now()
+	res, err = Call("", "test_args", 69)
 	end_t = time.Now()
 	if err != nil {
 		t.Error("test_args", err)

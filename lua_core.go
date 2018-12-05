@@ -2,7 +2,7 @@ package lua
 
 import (
 	"container/list"
-	//"runtime"
+	"runtime"
 	"sync"
 )
 
@@ -11,6 +11,7 @@ var (
 	coreOnce sync.Once
 )
 
+// one LuaJit vm per core
 type gLuaCore struct {
 	queue    chan *gLuaContext
 	vms      *list.List
@@ -21,8 +22,8 @@ type gLuaCore struct {
 
 func getCore() *gLuaCore {
 	coreOnce.Do(func() {
-		//count := runtime.NumCPU()
-		count := 2
+		count := runtime.NumCPU()
+		//count := 2
 		core = &gLuaCore{
 			queue:    make(chan *gLuaContext, 128),
 			vms:      list.New(),
