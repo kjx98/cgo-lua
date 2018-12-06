@@ -6,11 +6,11 @@ import "C"
 import "errors"
 
 // DoFile -- dofile on all core vm
-func DoFile(scriptFile string) error {
+func DoFile(scriptPath string) error {
 	vms := getCore().vms
 	count := vms.Len()
 	e := vms.Front()
-	target, err := LoadScript(scriptFile)
+	target, err := LoadScript(scriptPath)
 	if err != nil {
 		return err
 	}
@@ -18,8 +18,12 @@ func DoFile(scriptFile string) error {
 		vm := e.Value.(*gLuaVM)
 		ret := C.gluaL_dostring(vm.vm, C.CString(target))
 		if ret != C.LUA_OK {
+			ExpireScript(scriptPath)
 			return errors.New("luaL_loadfile failed")
 		}
+		// ignore returns of luaL_dostring
+		num := C.lua_gettop(vm.vm)
+		C.glua_pop(vm.vm, num)
 		e = e.Next()
 		vms.PushBack(vm)
 	}
