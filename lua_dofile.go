@@ -3,7 +3,10 @@ package lua
 // #cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
 //#include "glua.h"
 import "C"
-import "errors"
+import (
+	"errors"
+	"unsafe"
+)
 
 // DoFile -- dofile on all core vm
 func DoFile(scriptPath string) error {
@@ -14,9 +17,10 @@ func DoFile(scriptPath string) error {
 	if err != nil {
 		return err
 	}
+	script := []byte(target)
 	for i := 0; i < count && e != nil; i++ {
 		vm := e.Value.(*gLuaVM)
-		ret := C.gluaL_dostring(vm.vm, C.CString(target))
+		ret := C.gluaL_dostring(vm.vm, (*C.char)(unsafe.Pointer(&script[0])))
 		if ret != C.LUA_OK {
 			ExpireScript(scriptPath)
 			return errors.New("luaL_loadfile failed")

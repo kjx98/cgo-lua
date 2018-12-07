@@ -2,6 +2,7 @@ package lua
 
 import (
 	"errors"
+	"unsafe"
 )
 
 // #cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
@@ -30,8 +31,8 @@ func (t *gLuaThread) call(scriptPath string, methodName string, args ...interfac
 		if err != nil {
 			return nil, err
 		}
-
-		ret = C.gluaL_dostring(t.thread, C.CString(target))
+		script := []byte(target)
+		ret = C.gluaL_dostring(t.thread, (*C.char)(unsafe.Pointer(&script[0])))
 		if ret != C.LUA_OK {
 			ExpireScript(scriptPath)
 			errStr := C.GoString(C.glua_tostring(t.thread, -1))

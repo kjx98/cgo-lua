@@ -22,6 +22,18 @@ func json_decode(args ...interface{}) (interface{}, error) {
 	return res, err
 }
 
+func TestLuaFib(t *testing.T) {
+	start_t := time.Now()
+	res, err := Call("script.lua", "fib", 35)
+	end_t := time.Now()
+	if err != nil {
+		t.Error("fib", err)
+	} else {
+		delta_t := end_t.Sub(start_t)
+		t.Log(res, "cost", delta_t.Seconds(), "seconds")
+	}
+}
+
 func TestLuaRun(t *testing.T) {
 	RegisterExternMethod("json_decode", json_decode)
 	RegisterExternMethod("test_sum", test_sum)
