@@ -2,6 +2,7 @@ package lua
 
 import (
 	"math"
+	"unsafe"
 )
 
 // #cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
@@ -12,7 +13,9 @@ func pushToLua(L *C.struct_lua_State, args ...interface{}) {
 	for _, arg := range args {
 		switch arg.(type) {
 		case string:
-			C.lua_pushstring(L, C.CString(arg.(string)))
+			cStr := C.CString(arg.(string))
+			defer C.free(unsafe.Pointer(cStr))
+			C.lua_pushstring(L, cStr)
 		case float64:
 			C.lua_pushnumber(L, C.lua_Number(arg.(float64)))
 		case float32:
@@ -68,7 +71,9 @@ func pushMapToLua(L *C.struct_lua_State, data map[string]interface{}) {
 		return
 	}
 	for key, value := range data {
-		C.lua_pushstring(L, C.CString(key))
+		cStr := C.CString(key)
+		defer C.free(unsafe.Pointer(cStr))
+		C.lua_pushstring(L, cStr)
 		pushToLua(L, value)
 		C.lua_settable(L, -3)
 	}

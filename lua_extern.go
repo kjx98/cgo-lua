@@ -2,6 +2,7 @@ package lua
 
 import (
 	"errors"
+	"unsafe"
 )
 
 // #cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
@@ -47,13 +48,17 @@ func sync_go_method(vm *C.struct_lua_State) C.int {
 	tagetMethod, ok := methodDic[methodName]
 	if false == ok {
 		C.lua_pushnil(vm)
-		C.lua_pushstring(vm, C.CString("Invalid Method Name"))
+		cStr := C.CString("Invalid Method Name")
+		defer C.free(unsafe.Pointer(cStr))
+		C.lua_pushstring(vm, cStr)
 		return 2
 	}
 	res, err := tagetMethod(args...)
 	if err != nil {
 		pushToLua(vm, 0)
-		C.lua_pushstring(vm, C.CString(err.Error()))
+		cStr := C.CString(err.Error())
+		defer C.free(unsafe.Pointer(cStr))
+		C.lua_pushstring(vm, cStr)
 		return 2
 	} else {
 		pushToLua(vm, res)

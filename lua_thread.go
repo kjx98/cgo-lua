@@ -31,8 +31,9 @@ func (t *gLuaThread) call(scriptPath string, methodName string, args ...interfac
 		if err != nil {
 			return nil, err
 		}
-		script := []byte(target)
-		ret = C.gluaL_dostring(t.thread, (*C.char)(unsafe.Pointer(&script[0])))
+		script := C.CString(target)
+		defer C.free(unsafe.Pointer(script))
+		ret = C.gluaL_dostring(t.thread, script)
 		if ret != C.LUA_OK {
 			ExpireScript(scriptPath)
 			errStr := C.GoString(C.glua_tostring(t.thread, -1))
@@ -40,7 +41,9 @@ func (t *gLuaThread) call(scriptPath string, methodName string, args ...interfac
 		}
 	}
 
-	C.glua_getglobal(t.thread, C.CString(methodName))
+	cStr := C.CString(methodName)
+	defer C.free(unsafe.Pointer(cStr))
+	C.glua_getglobal(t.thread, cStr)
 	pushToLua(t.thread, args...)
 
 	ret = C.lua_resume(t.thread, C.int(len(args)))
