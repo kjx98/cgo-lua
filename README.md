@@ -1,11 +1,11 @@
 # cgo-lua
-A Go(lang) wrapper for LuaJit-2.1(Lua JIT Library) which is often used for embed script support.
+A Go(lang) wrapper for LuaJit-2.x(Lua JIT Library) which is often used for embed script support.
 Forked from [RyouZhang] (https://github.com/RyouZhang/go-lua)
 
 [![Build Status](https://travis-ci.org/kjx98/cgo-lua.svg?branch=master)](https://travis-ci.org/kjx98/cgo-lua)
 [![GoDoc](https://godoc.org/github.com/kjx98/cgo-lua?status.svg)](https://godoc.org/github.com/kjx98/cgo-lua)
 
-To use the library you need LuaJit 2.1 installed.
+To use the library you need LuaJit 2.0/2.1 installed.
 
 ## Example
 ```go
@@ -38,7 +38,7 @@ $ go install github.com/kjx98/cgo-lua
 ### Dependencies
 
 To use luajit for go, you need to have the
-[Luajit-2.1](http://luajit.org) already installed:
+[Luajit-2.x](http://luajit.org) already installed:
 
 ##### Mac OS X
 

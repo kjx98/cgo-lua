@@ -1,0 +1,3 @@
+#! /bin/sh
+
+CGO_CFLAGS=`pkg-config --cflags luajit` go test -v ./...

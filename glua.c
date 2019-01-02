@@ -1,7 +1,7 @@
-#include <luajit-2.1/luajit.h>
-#include <luajit-2.1/lua.h>
-#include <luajit-2.1/lauxlib.h>
-#include <luajit-2.1/lualib.h>
+#include <luajit.h>
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 #include "_cgo_export.h"
 
 extern int sync_go_method(lua_State* _L);
