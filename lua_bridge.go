@@ -4,7 +4,8 @@ import (
 	"errors"
 )
 
-// #cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
+//#cgo linux freebsd darwin pkg-config: luajit
+//#cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
 //#include "glua.h"
 import "C"
 

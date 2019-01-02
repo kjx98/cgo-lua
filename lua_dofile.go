@@ -1,6 +1,5 @@
 package lua
 
-// #cgo LDFLAGS:  -lluajit-5.1 -ldl -lm
 //#include "glua.h"
 import "C"
 
