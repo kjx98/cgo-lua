@@ -1,9 +1,13 @@
 #include <stdlib.h>
-#include <luajit-2.1/luajit.h>
-#include <luajit-2.1/lua.h>
-#include <luajit-2.1/lauxlib.h>
-#include <luajit-2.1/lualib.h>
+#include <luajit.h>
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 
+/* co ops with luajit-2.0 */
+#ifndef	LUA_OK
+#define	LUA_OK			0
+#endif
 int gluaL_dostring(lua_State* _L, char* script);
 void glua_getglobal(lua_State* _L, char* name);
 void glua_setglobal(lua_State* _L, char* name);
